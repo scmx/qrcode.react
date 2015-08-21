@@ -31,6 +31,7 @@ type Props = {
   level: $Keys<typeof ErrorCorrectLevel>,
   bgColor: string,
   fgColor: string,
+  logo: string,
 };
 
 class QRCode extends React.Component {
@@ -106,6 +107,19 @@ class QRCode extends React.Component {
             );
         });
       });
+
+      if (this.props.logo) {
+        var size = this.props.size;
+        var image = document.createElement('img');
+        image.src = this.props.logo;
+        image.onload = function() {
+          var dx = size / 2 - size * 0.1;
+          var dwidth = size * 0.2;
+          if (ctx) {
+            ctx.drawImage(image, dx, dx, dwidth, dwidth);
+          }
+        };
+      }
     }
   }
 
