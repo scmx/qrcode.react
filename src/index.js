@@ -32,6 +32,8 @@ type Props = {
   bgColor: string,
   fgColor: string,
   logo: string,
+  logoHeight: number,
+  logoWidth: number,
 };
 
 class QRCode extends React.Component {
@@ -51,6 +53,9 @@ class QRCode extends React.Component {
     level: PropTypes.oneOf(['L', 'M', 'Q', 'H']),
     bgColor: PropTypes.string,
     fgColor: PropTypes.string,
+    logo: PropTypes.string,
+    logoHeight: PropTypes.number,
+    logoWidth: PropTypes.number,
   };
 
   shouldComponentUpdate(nextProps: Props) {
@@ -112,11 +117,16 @@ class QRCode extends React.Component {
         var size = this.props.size;
         var image = document.createElement('img');
         image.src = this.props.logo;
-        image.onload = function() {
-          var dx = size / 2 - size * 0.1;
-          var dwidth = size * 0.2;
+        image.onload = () => {
+          var dwidth = this.props.logoWidth || size * 0.2;
+          var dheight =
+            this.props.logoHeight || image.height / image.width * dwidth;
+          var dx = (size - dwidth) / 2;
+          var dy = (size - dheight) / 2;
+          image.width = dwidth;
+          image.height = dheight;
           if (ctx) {
-            ctx.drawImage(image, dx, dx, dwidth, dwidth);
+            ctx.drawImage(image, dx, dy, dwidth, dwidth);
           }
         };
       }
